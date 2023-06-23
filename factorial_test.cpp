@@ -1,13 +1,13 @@
 #include <iostream>
 using namespace std;
 template <typename T>
-T factorial(T n)
+T factorial(const T &&n)
 {
-    T factorial = 1ll;
+    T factorial(1);
     for (T i(1); i <= n; ++i)
         factorial *= i;
-    return factorial;
+    return std::move(factorial);
 }
 int main(){
-    cout<<factorial<long long>(3);
+    cout<<factorial<int>(3);
 }
