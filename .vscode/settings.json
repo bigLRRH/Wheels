@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "new": "cpp",
+        "compare": "cpp",
+        "concepts": "cpp"
+    }
+}
