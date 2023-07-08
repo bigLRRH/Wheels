@@ -1,4 +1,4 @@
-#include <iostream>
+import <iostream>;
 using namespace std;
 template <typename T>
 T factorial(const T &&n)
