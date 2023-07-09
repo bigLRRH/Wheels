@@ -11,4 +11,5 @@ T factorial(const T &&n)
 // https://www.luogu.com.cn/problem/solution/P5282
 long long fast_factorial(int n, long long p)
 {
+    
 }
