@@ -1,57 +1,71 @@
+// references：
+// https://en.wikipedia.org/wiki/Discrete_Fourier_transform
+// https://oi-wiki.org/math/poly/fft/
 // https://www.cnblogs.com/LanrTabe/p/11305604.html
-// 这个星球上最快的fft(Fastest Fourier Transform) http://fftw.org/
+// http://fftw.org/
+// etc
+
 #include <complex>
 #include <vector>
 #include <numbers>
-#include <stdexcept>
-using std::vector, std::complex, std::numbers::pi;
+#include <algorithm>
+#include <execution>
+using std::vector, std::complex, std::numbers::pi, std::size_t, std::polar;
 
-class FourierTransformError : public std::runtime_error
+// warning: This is a quick prototype requiring language optimization.
+template <typename T>
+vector<complex<T>> discrete_fourier_transform(
+    const std::vector<complex<T>> &sequence, const bool inverse = false)
 {
-public:
-    FourierTransformError(const std::string &message) : std::runtime_error(message) {}
-};
+    const size_t N = sequence.size();
 
-vector<complex<double>> discrete_fourier_transform(const vector<complex<double>> &x)
-{
-    const int N = x.size();
-    if (N < 1)
-        throw FourierTransformError("The order of a Fourier transform must be greater than 0");
-    vector<complex<double>> X(N);
+    vector<complex<T>> result(N);
 
-    for (int k = 0; k < N; ++k)
+    for (size_t k = 0; k < N; ++k)
     {
-        X[k] = 0.0;
-        for (int n = 0; n < N; ++n)
+        complex<T> sum = 0;
+
+        for (size_t n = 0; n < N; ++n)
         {
-            double angle = 2 * pi * k * n / N;
-            X[k] += x[n] * std::polar(1.0, -angle);
+            T angle = (inverse ? 1 : -1) * 2 * pi * k * n / N;
+            sum += sequence[n] * polar(T(1), angle);
         }
+        result[k] = sum * (inverse ? T(1) / T(N) : T(1));
     }
-    return X;
+
+    return result;
 }
 
-vector<complex<double>> inverse_discrete_fourier_transform(const vector<complex<double>> &X)
+// 并行优化版
+// todo 使用reduce替代accumulate
+template <typename T>
+vector<complex<T>> discrete_fourier_transform(
+    const std::vector<complex<T>> &sequence, const bool inverse = false)
 {
-    const int N = X.size();
-    if (N < 1)
-        throw FourierTransformError("The order of a Fourier transform must be greater than 0");
-    vector<complex<double>> x(N);
+    const size_t N = sequence.size();
+    vector<complex<T>> result(N);
 
-    for (int n = 0; n < N; ++n)
-    {
-        x[n] = 0.0;
-        for (int k = 0; k < N; ++k)
+    std::transform(
+        std::execution::par_unseq, sequence.begin(), sequence.end(), result.begin(),
+        [&](const complex<T> &sequence_k)
         {
-            double angle = 2 * pi * k * n / N;
-            x[n] += X[k] * std::polar(1.0, angle);
-        }
-        x[n] /= N;
-    }
-    return x;
-}
+            auto k = &sequence_k - &sequence[0];
+            return (inverse ? T(1) / T(N) : T(1)) *
+                   std::accumulate(
+                       sequence.begin(), sequence.end(),
+                       complex<T>(0, 0),
+                       [&](const complex<T> &init, const complex<T> &x_n)
+                       {
+                           auto n = &x_n - &sequence[0];
+                           T angle = (inverse ? 1 : -1) * 2 * pi * k * n / N;
+                           return init + x_n * polar(T(1), angle);
+                       });
+        });
 
-vector<complex<double>> fast_fourier_transform(const vector<complex<double>> &x)
+    return result;
+}
+template <typename T>
+vector<complex<T>> fast_fourier_transform(const vector<T> &x, const bool inverse = false)
 {
-    discrete_fourier_transform(x);
+    return discrete_fourier_transform(x, inverse);
 }
