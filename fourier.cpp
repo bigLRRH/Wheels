@@ -37,16 +37,19 @@ vector<complex<T>> discrete_fourier_transform(
 }
 
 // 并行优化版
-// todo 使用reduce替代accumulate
+// todo: 使用reduce替代accumulate
 template <typename T>
-vector<complex<T>> discrete_fourier_transform(
-    const std::vector<complex<T>> &sequence, const bool inverse = false)
+vector<complex<T>> discrete_fourier_transform_parallel(
+    const vector<complex<T>> &sequence, const bool inverse = false)
 {
     const size_t N = sequence.size();
+    
     vector<complex<T>> result(N);
 
     std::transform(
-        std::execution::par_unseq, sequence.begin(), sequence.end(), result.begin(),
+        std::execution::par_unseq,
+        sequence.begin(), sequence.end(),
+        result.begin(),
         [&](const complex<T> &sequence_k)
         {
             auto k = &sequence_k - &sequence[0];
@@ -64,8 +67,11 @@ vector<complex<T>> discrete_fourier_transform(
 
     return result;
 }
+
+// todo:
 template <typename T>
-vector<complex<T>> fast_fourier_transform(const vector<T> &x, const bool inverse = false)
+vector<complex<T>> fast_fourier_transform(
+    const vector<complex<T>> &sequence, const bool inverse = false)
 {
-    return discrete_fourier_transform(x, inverse);
+    return discrete_fourier_transform(sequence, inverse);
 }
