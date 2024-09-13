@@ -5,7 +5,7 @@
 namespace fs = std::filesystem;
 using fs::__cxx11::directory_entry;
 
-const std::string path{R"(C:\qBittorrentCache)"};
+const std::string path{R"(C:\wallpapercache)"};
 const fs::path new_path{"D:/Sources/pictures/wallpapers"};
 
 void find_file_and_rename(const directory_entry &entry, const std::string &year, const std::string &month);
