@@ -1,11 +1,30 @@
-#include <iostream>
-#include <filename>
-using namespace std;
+#include<iostream>
+
+template<typename T>
+void print(T & t)
+{
+    std::cout<<"左值"<<std::endl;
+}
+
+template<typename T>
+void print(T && t)
+{
+    std::cout<<"右值"<<std::endl;
+}
+
+template<typename T>
+void testForward(T && v)
+{
+    print(v);
+    print(std::forward<T>(v));
+    print(std::move(v));
+}
+
 int main()
 {
-    // 构建新的文件路径
-    fs::path new_path = entry2.path().parent_path() / new_filename;
-
-    // 重命名文件
-    fs::rename(entry2.path(), new_path);
+    testForward(1);
+    std::cout << "======================" << std::endl;
+    int x = 1;
+    testForward(x);    
+    return 0;
 }

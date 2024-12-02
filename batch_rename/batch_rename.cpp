@@ -68,7 +68,7 @@ void find_file_and_rename(const directory_entry &entry, const std::string &year,
         std::cout << "\033[34m"
                   << "old_filename: " << filename
                   << "\033[0m" << std::endl;
-        const std::regex filename_regex{R"((www\.acg\.gy_|acg\.gy_|ACG\.GY_)|acg,gy_)"};
+        const std::regex filename_regex{R"((www\.acg\.gy_|acg\.gy_|ACG\.GY_)|acg,gy_|hacg\.me_|hacg,me_)"};
         std::smatch filename_match;
         if (std::regex_search(filename, filename_match, filename_regex))
         {
