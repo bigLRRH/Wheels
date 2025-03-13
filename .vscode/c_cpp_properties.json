@@ -1,22 +1,22 @@
 {
     "configurations": [
         {
-            "name": "Windows",
+            "name": "WSL",
             "includePath": [
                 "${workspaceFolder}/**",
-                "C:\\msys64\\ucrt64\\include\\c++\\14.2.0",
-                "C:\\msys64\\ucrt64\\include\\c++\\14.2.0\\x86_64-w64-mingw32",
-                "C:\\msys64\\ucrt64\\include"
+                "/usr/include/c++/*",    // 自动匹配 GCC 版本号
+                "/usr/include/x86_64-linux-gnu/c++/*",  // 多架构支持
+                "/usr/include"
             ],
             "defines": [
                 "_DEBUG",
                 "UNICODE",
                 "_UNICODE"
             ],
-            "compilerPath": "C:\\msys64\\ucrt64\\bin\\g++.exe",
+            "compilerPath": "/usr/bin/g++",
             "cStandard": "c17",
             "cppStandard": "c++23",
-            "intelliSenseMode": "windows-gcc-x64",
+            "intelliSenseMode": "linux-gcc-x64"
         }
     ],
     "version": 4
