@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "*.cpp": "cpp",
         "array": "cpp",
         "atomic": "cpp",
         "bit": "cpp",
@@ -64,7 +65,8 @@
         "filesystem": "cpp",
         "print": "cpp",
         "text_encoding": "cpp",
-        "cstdarg": "cpp"
+        "cstdarg": "cpp",
+        "xstring": "cpp"
     },
     "C_Cpp.default.compilerPath": "C:\\msys64\\ucrt64\\bin\\g++.exe"
 }

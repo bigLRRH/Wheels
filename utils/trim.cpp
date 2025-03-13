@@ -2,17 +2,20 @@
 #include <algorithm>
 #include <cctype>
 
+bool is_not_space(unsigned char c)
+{
+    return !std::isspace(c);
+}
+
 std::string trim_left(std::string s)
 {
-    s.erase(s.begin(), std::find_if_not(s.begin(), s.end(), [](unsigned char c)
-                                        { return std::isspace(c); }));
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), is_not_space));
     return s;
 }
 
 std::string trim_right(std::string s)
 {
-    s.erase(std::find_if_not(s.rbegin(), s.rend(), [](unsigned char c)
-                             { return std::isspace(c); })
+    s.erase(std::find_if(s.rbegin(), s.rend(), is_not_space)
                 .base(),
             s.end());
     return s;

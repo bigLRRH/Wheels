@@ -1,30 +1,10 @@
 #include<iostream>
-
-template<typename T>
-void print(T & t)
-{
-    std::cout<<"左值"<<std::endl;
-}
-
-template<typename T>
-void print(T && t)
-{
-    std::cout<<"右值"<<std::endl;
-}
-
-template<typename T>
-void testForward(T && v)
-{
-    print(v);
-    print(std::forward<T>(v));
-    print(std::move(v));
-}
+#include<cstdio>
 
 int main()
 {
-    testForward(1);
-    std::cout << "======================" << std::endl;
-    int x = 1;
-    testForward(x);    
+    int a,b;
+    scanf("%d %d",&a,&b);
+    std::cout<<a<<" "<<b<<std::endl;
     return 0;
 }
